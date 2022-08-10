@@ -1,0 +1,51 @@
+﻿@model IEnumerable<AllMoviesSeriesViewModel>
+@*
+
+
+*@
+@{
+
+}
+
+
+<h1> My Library</h1>
+
+
+
+@if (!Model.Any())
+{
+    <p>There were no Movies or Tv-Serie. First you need to add some movies or series</p>
+}
+
+else
+{
+    <div class="card-deck">
+
+        @foreach (var ms in Model)
+        {
+            <div class="col-sm-6 col-lg-4 mb-3">
+                <div class="card mb-3">
+                    <img class="card-img-top" src="@ms.poster_path" alt="Card image cap">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">@ms.title</h5>
+                        <p class="card-text">@ms.overview</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#!" class="btn btn-primary">See Movie</a>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        }
+
+    </div>
+
+
+ 
+
+}
+
+
