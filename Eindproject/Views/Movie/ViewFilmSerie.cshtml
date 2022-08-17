@@ -171,47 +171,7 @@ else
                             }
                         </section>
                     </div>
-                    <div class="col-sm-4">
-                        <section class="mb-3 card">
-                            <div class="card-header">
-                                <h5><strong>Edit</strong></h5>
-                            </div>
-                            <div class="card-body ">
-
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#@serieOfFilmInLijst.SerieOfFilmInLijstId">Edit</button>
-
-                                <div id="@serieOfFilmInLijst.SerieOfFilmInLijstId" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Edit</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            @using (Html.BeginForm("Edit", "Movie", FormMethod.Get))
-                                            {
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <label for="AmountWatched">Amount Watched :</label>
-                                                        <input type="text" class="form-control" id="gekeken" name="gekeken" placeholder="">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="AmountWatched">Score out of 10 :</label>
-                                                        <input type="text" class="form-control" id="score" name="score" placeholder="">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="hidden" class="form-control" id="id" name="id" value="@serieOfFilmInLijst.SerieOfFilmInLijstId" placeholder="">
-                                                    </div>
-                                                    <input type="submit" value="Edit" />
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
+                 
                 }
             }
             else
@@ -297,9 +257,7 @@ else
                             <div class="d-flex justify-content-end align-items-center comment-buttons mt-2 text-right"><button id="DeleteComment" class="btn-secondary mr-3 delete">Delete</button><button class="btn btn-success btn-sm border-0 px-3" type="button" data-toggle="ajax-modal" data-target="#EditComment" data-url="@Url.Action("EditComment", new { CommentId = comment.Item2.CommentId})">Edit</button></div>
                             <div class="bg-white p-2">
                                 <div class="d-flex flex-row fs-12">
-                                    <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
                                     <div class="like p-2 cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-1"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
-                                    <div class="like p-2 cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-2" href="#collapse-2"><i class="fa fa-share"></i><span class="ml-1">Share</span></div>
                                 </div>
                             </div>
                             <div id="collapse-1" class="bg-light p-2 collapse" data-parent="#myGroup">
