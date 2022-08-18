@@ -103,6 +103,7 @@ namespace Eindproject.Controllers
         /// <returns></returns>
         public IActionResult Add(int apiId, string originalTitle, int aantalAfl, TimeSpan tijdePerAflevering,string filmUrl )
         {
+            
             var id = userManager.GetUserId(User);
             int lijstId = _context.Lijsts.FirstOrDefault(l => l.UserId == id).LijstId;
             
@@ -118,15 +119,6 @@ namespace Eindproject.Controllers
             return RedirectToAction("Watchlist", new { Id = lijstid });
         }
 
-
-        /// <summary>
-        /// Update gegevens van film of serie
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult Update()
-        {
-            return View();
-        }
 
         /// <summary>
         /// Post a new Comment from the user on the movie
@@ -188,6 +180,10 @@ namespace Eindproject.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditComment(int Comment_Id, string Comment_Message)
         {
+            if (string.IsNullOrEmpty(Comment_Message))
+            {
+                return PartialView("CommentModalPartial", new CommentViewModel());
+            }
             
             Comment comment = commentRepository.GetComment(Comment_Id);
             comment.Comment_Message = Comment_Message;
@@ -468,46 +464,41 @@ namespace Eindproject.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Search(  string search,  int counter)
         {
+            if(search == null)
+            {
+                return View();    
+            }
+
             ViewData["search"] = search;
             ViewData["Base"] = base_url;
             ViewData["File"] = file_size;
             var result = new List<AllMoviesSeriesViewModel>();
             result = await MultiSearchMoviesOrSeries(search);
 
-            if ( search !=  null)
+          
+            List<AllMoviesSeriesViewModel[]> allMovies = new List<AllMoviesSeriesViewModel[]>();
+            if (result.Any())
             {
-                List<AllMoviesSeriesViewModel[]> allMovies = new List<AllMoviesSeriesViewModel[]>();
-                if (result.Any())
-                {
 
-                    int totalNumberOfMovies = result.Count();
-                    int remainder = 0;
-                    int quotient = 0;
-                    int counterArray = 0;
+                int totalNumberOfMovies = result.Count();
+                int remainder = 0;
+                int quotient = 0;
+                int counterArray = 0;
 
 
-                    // Aanmaken van list + Aantal van aangemaakt array te bepalen via remainder en quotient
-                    allMovies = ListOfAllMoviePages(quotient, remainder, totalNumberOfMovies, allMovies);
+                // Aanmaken van list + Aantal van aangemaakt array te bepalen via remainder en quotient
+                allMovies = ListOfAllMoviePages(quotient, remainder, totalNumberOfMovies, allMovies);
 
-                    counter = Math.Clamp(counter, 0, allMovies.Count() - 1);
-                    ViewData["Counter"] = counter;
-
-
-                    // En dan op basis van wat de counter is de array meegeven via de view 
-                    allMovies = FillInListWithItems(result.ToList(), counterArray, allMovies);
-                    ViewData["TotalPages"] = allMovies.Count();
-                    var moviesAndSeries = allMovies[counter];
-                    return View(moviesAndSeries);
+                 counter = Math.Clamp(counter, 0, allMovies.Count() - 1);
+                ViewData["Counter"] = counter;
 
 
-                }
-                else
-                {
+                // En dan op basis van wat de counter is de array meegeven via de view 
+                allMovies = FillInListWithItems(result.ToList(), counterArray, allMovies);
+                ViewData["TotalPages"] = allMovies.Count();
+                var moviesAndSeries = allMovies[counter];
+                return View(moviesAndSeries);
 
-                    ViewData["Counter"] = 0;
-                    ViewData["TotalPages"] = 0;
-                    return View(new AllMoviesSeriesViewModel[10]);
-                }
 
             }
             else
@@ -515,9 +506,17 @@ namespace Eindproject.Controllers
 
                 ViewData["Counter"] = 0;
                 ViewData["TotalPages"] = 0;
-
                 return View(new AllMoviesSeriesViewModel[10]);
             }
+
+            
+            
+
+            ViewData["Counter"] = 0;
+            ViewData["TotalPages"] = 0;
+
+            return View(new AllMoviesSeriesViewModel[10]);
+            
             
          
 
@@ -656,6 +655,8 @@ namespace Eindproject.Controllers
                 string TvUrl = $"3/tv/{id}?api_key={api_key}&language=en-US";
                 AllMoviesSeriesViewModel serie = MakeRequestMovieSerie(id, TvUrl).Result;
                 if (serie == null)
+                    return null;
+                if (serie.number_of_episodes == null || serie.number_of_seasons == null)
                     return null;
                 MovieInfo = new List<int> { serie.number_of_episodes.Value, serie.season_number, serie.number_of_seasons.Value };
                 return MovieInfo;

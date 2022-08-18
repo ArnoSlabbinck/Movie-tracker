@@ -1,4 +1,5 @@
 ﻿using Eindproject.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace Eindproject.Data
 
         public void UpdateComment(Comment comment)
         {
-            applicationDbContext.Comments.Update(comment);
+            applicationDbContext.Entry(comment).State = EntityState.Modified;
             Save();
         }
 
