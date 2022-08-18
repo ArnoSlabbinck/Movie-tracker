@@ -4,6 +4,7 @@ using Eindproject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,8 @@ namespace Eindproject.Controllers
     public class MovieController : Controller
     {
 
-        public readonly static string api_key = "a6757881bee403fc131961853ec0155f";
-        public readonly static string base_url = "https://api.themoviedb.org/";
+        public static string api_key;
+        public static string base_url;
         public readonly static string file_size = "/w500";
         // To get the full image =>  base_url, file_size, file_path bv.
         private readonly HttpClient httpClient;
@@ -61,7 +62,7 @@ namespace Eindproject.Controllers
               {"Kids", 10762 }
             };
 
-
+        private readonly IConfiguration configuration;
         private readonly ICommentRepository commentRepository;
         private readonly UserManager<ApplicationUser> userManager; 
         private int itemsPerPage = 10; 
@@ -69,13 +70,17 @@ namespace Eindproject.Controllers
             HttpClient httpClient,
             IMovieRepository movieRepository, 
             ICommentRepository commentRepository, 
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, 
+            IConfiguration configuration)
         {
             this.httpClient = httpClient;
             _context = applicationDbContext;
             this.movieRepository = movieRepository;
             this.commentRepository = commentRepository;
             this.userManager = userManager;
+            this.configuration = configuration;
+            api_key = configuration["Api_Key"];
+            base_url = configuration["Base_url"];
         }
         public IActionResult Index()
         {
