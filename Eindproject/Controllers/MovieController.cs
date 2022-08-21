@@ -157,46 +157,7 @@ namespace Eindproject.Controllers
             //Zorgen dat als ik een view terug geef
             return View(MovieComment);  
         }
-        /// <summary>
-        /// Edit comment from User with a modal
-        /// </summary>
-        /// <param name="CommentId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult EditComment(int CommentId)
-        {
-
-            var comment = commentRepository.GetComment(CommentId);
-            CommentViewModel commentView = new CommentViewModel();
-            commentView.Comment_Id = CommentId;
-            commentView.Comment_Message = comment.Comment_Message;
-            commentView.Created_Date = comment.Created_Date;
-            TempData["id"] = CommentId;
-            return PartialView("CommentModalPartial", commentView);
-        }
-
-        /// <summary>
-        /// Post new Comment to database
-        /// </summary>
-        /// <param name="Comment_Id"></param>
-        /// <param name="Comment_Message"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditComment(int Comment_Id, string Comment_Message)
-        {
-            if (string.IsNullOrEmpty(Comment_Message))
-            {
-                return PartialView("CommentModalPartial", new CommentViewModel());
-            }
-            
-            Comment comment = commentRepository.GetComment(Comment_Id);
-            comment.Comment_Message = Comment_Message;
-            comment.Created_Date = DateTime.Now;
-            commentRepository.UpdateComment(comment);
-            return PartialView("CommentModalPartial", new CommentViewModel());
-        }
-
+       
         [HttpPost]
         [Route("Movie/Comment/{id}")]
         public IActionResult Comment(int? id)
@@ -243,7 +204,7 @@ namespace Eindproject.Controllers
 
                
                 vm = GetMovieOrSerie(tvUrl).Result;
-                vm.poster_path = base_url + file_size + vm.poster_path;
+                vm.poster_path = "https://image.tmdb.org/t/p/original" + vm.poster_path;
             }
             else
             {
@@ -531,15 +492,6 @@ namespace Eindproject.Controllers
         }
 
 
-        private void GetLatestMoviesTrailers()
-        {
-
-            // Display the 3 latest trailers of movies in the cinema
-            // Find the movies that has just been released
-            // Search on the date from now
-            // Movies just released
-            
-        }
 
         /// <summary>
         /// Build a comment section in the detail for each film or serie.The comments order recent from oldest

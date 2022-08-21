@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Movietracker.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace Eindproject
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<INotificationRepository, NotificationRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IMovieRepository, MovieRepository>();
             Uri themovieDbUri = new Uri("https://api.themoviedb.org/");
 

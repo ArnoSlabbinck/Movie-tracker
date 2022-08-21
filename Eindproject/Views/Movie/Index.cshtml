@@ -9,7 +9,7 @@
     var moviesNotReleased = Model.ToList()[1];
     var moviesMostPopular = Model.ToList()[2];
     var moviesTrending = Model.ToList()[0];
-
+    var year = DateTime.Now.Year;
     string baseUrl = "https://image.tmdb.org/t/p/original";
     string fileSize = (string)ViewData["File"];
 
@@ -22,7 +22,7 @@
 <section class="moviesNotReleased">
     <div class="container-fluid">
         <h1>Coming Next</h1>
-        <p>2022 looks like it's going to be a good year to hit the cinema again!</p>
+        <p>@year looks like it's going to be a good year to hit the cinema again!</p>
         <div class="row">
 
             <div class="scrollcards">

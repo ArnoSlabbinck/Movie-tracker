@@ -15,7 +15,7 @@
     {
         serieOfFilmInLijst = Data.SerieOfFilms.FirstOrDefault(u => u.LijstId == checkLijst.LijstId && u.ApiId == Model.id);
     }
-    string baseurl = "https://image.tmdb.org/t/p/original";
+    string baseUrl = "https://image.tmdb.org/t/p/original";
 
     string title = string.Empty;
 
@@ -33,9 +33,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-@if (string.IsNullOrEmpty(Model.title))
+@if (string.IsNullOrEmpty(Model.overview))
 {
-    <h1>This movie is not yet available with information </h1>
+    <h1>This movie/serie is not yet available with information </h1>
 }
 else
 {
@@ -61,7 +61,7 @@ else
         </div>
         <div class="col-sm-3">
             <section class="mb-3 card">
-                <img src="@Model.poster_path" />
+                <img src="@baseUrl@Model.poster_path" />
             </section>
         </div>
     </div>
@@ -214,7 +214,7 @@ else
 
                             <div id="EditComment"></div>
                             <input id="CommentId" type="hidden" asp-for="@comment.Item2.CommentId" />
-                            <div class="d-flex justify-content-end align-items-center comment-buttons mt-2 text-right"><button id="DeleteComment" class="btn-secondary mr-3 delete">Delete</button><button class="btn btn-success btn-sm border-0 px-3" type="button" data-toggle="ajax-modal" data-target="#EditComment" data-url="@Url.Action("EditComment", new { CommentId = comment.Item2.CommentId})">Edit</button></div>
+                            <div class="d-flex justify-content-end align-items-center comment-buttons mt-2 text-right"><button id="DeleteComment" class="btn-secondary mr-3 delete">Delete</button><button class="btn btn-success btn-sm border-0 px-3" type="button" data-toggle="ajax-modal" data-target="#EditComment" data-url="@Url.Action("EditComment","Comment",  new { CommentId = comment.Item2.CommentId})">Edit</button></div>
                             <div class="bg-white p-2">
                                 <div class="d-flex flex-row fs-12">
                                     
