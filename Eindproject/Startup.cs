@@ -33,7 +33,7 @@ namespace Eindproject
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("SchoolConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<INotificationRepository, NotificationRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
